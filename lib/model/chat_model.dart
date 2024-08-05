@@ -6,7 +6,7 @@ class ChatModel {
   String userId = "";
   String nickname = "";
 
-  ChatModel(this.text, this.userId, this.nickname);
+  ChatModel({required this.text, required this.userId, required this.nickname});
 
   ChatModel.fromJson(Map<String, dynamic> json) {
     dataHora = (json['data_hora'] as Timestamp).toDate();
