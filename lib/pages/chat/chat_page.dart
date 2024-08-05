@@ -36,6 +36,7 @@ class _ChatPageState extends State<ChatPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Chat - ${widget.nickName}'),
+          backgroundColor: Colors.teal, // Changed for a more professional look
         ),
         body: Column(
           children: [
@@ -54,29 +55,45 @@ class _ChatPageState extends State<ChatPage> {
                   for (var message in messages) {
                     final messageText = message['text'];
                     final messageSender = message['nickname'];
+                    final isCurrentUser = messageSender == widget.nickName;
                     final messageWidget = Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 4.0, horizontal: 8.0),
+                          vertical: 6.0, horizontal: 12.0),
                       child: Align(
-                        alignment: messageSender == widget.nickName
+                        alignment: isCurrentUser
                             ? Alignment.centerRight
                             : Alignment.centerLeft,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: messageSender == widget.nickName
-                                ? Colors.blue
-                                : Colors.grey[300],
-                            borderRadius: BorderRadius.circular(12.0),
+                            color:
+                                isCurrentUser ? Colors.teal : Colors.grey[200],
+                            borderRadius: BorderRadius.circular(16.0),
                           ),
                           padding: const EdgeInsets.all(12.0),
-                          child: Text(
-                            '$messageSender: $messageText',
-                            style: TextStyle(
-                              color: messageSender == widget.nickName
-                                  ? Colors.white
-                                  : Colors.black,
-                              fontSize: 16.0,
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                messageSender,
+                                style: TextStyle(
+                                  color: isCurrentUser
+                                      ? Colors.white70
+                                      : Colors.black54,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                              const SizedBox(height: 4.0),
+                              Text(
+                                messageText,
+                                style: TextStyle(
+                                  color: isCurrentUser
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -86,6 +103,7 @@ class _ChatPageState extends State<ChatPage> {
                   return ListView(
                     reverse:
                         true, // Show the most recent messages at the bottom
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     children: messageWidgets,
                   );
                 },
@@ -101,16 +119,24 @@ class _ChatPageState extends State<ChatPage> {
                     child: TextField(
                       controller: _messageController,
                       decoration: InputDecoration(
-                        hintText: 'Escreva sua mensagem',
+                        hintText: 'Digite sua mensagem...',
+                        hintStyle: TextStyle(color: Colors.grey[600]),
+                        filled: true,
+                        fillColor: Colors.grey[100],
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: BorderSide.none,
                         ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 12.0),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16.0),
+                  const SizedBox(width: 12.0),
                   SizedBox(
-                    width: 48.0, // Fixed width for the button
+                    width: 48.0, // Set a fixed width for the button
+                    height:
+                        48.0, // Set a fixed height to maintain a square shape
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_messageController.text.isNotEmpty) {
@@ -123,10 +149,12 @@ class _ChatPageState extends State<ChatPage> {
                           _messageController.clear();
                         }
                       },
-                      child: const Align(
-                        alignment: Alignment.center,
-                        child: Icon(Icons.send),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal, // Updated parameter
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.zero,
                       ),
+                      child: Icon(Icons.send, size: 24.0),
                     ),
                   ),
                 ],

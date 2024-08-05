@@ -4,29 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TarefasPage extends StatefulWidget {
-  TarefasPage({super.key});
+  const TarefasPage({super.key});
 
   @override
   State<TarefasPage> createState() => _TarefasPageState();
 }
 
 class _TarefasPageState extends State<TarefasPage> {
-  final db = FirebaseFirestore.instance;
-
+  final FirebaseFirestore db = FirebaseFirestore.instance;
   String userId = '';
-  final descricaoController = TextEditingController();
-
-  var apenasNaoConcluidos = false;
+  final TextEditingController descricaoController = TextEditingController();
+  bool apenasNaoConcluidos = false;
 
   @override
   void initState() {
     super.initState();
-    carregarUsuario();
+    _carregarUsuario();
   }
 
-  void carregarUsuario() async {
+  Future<void> _carregarUsuario() async {
     final prefs = await SharedPreferences.getInstance();
-    userId = prefs.getString('user_id')!;
+    userId = prefs.getString('user_id') ?? '';
     setState(() {});
   }
 
@@ -35,10 +33,11 @@ class _TarefasPageState extends State<TarefasPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tarefas'),
+        backgroundColor: Colors.teal, // Consistente com o tema do app
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          descricaoController.text = '';
+          descricaoController.clear();
           showDialog(
             context: context,
             builder: (BuildContext bc) {
@@ -46,8 +45,19 @@ class _TarefasPageState extends State<TarefasPage> {
                 title: const Text('Adicionar Tarefa'),
                 content: TextField(
                   controller: descricaoController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Digite a descrição da tarefa',
+                    hintStyle: TextStyle(color: Colors.grey[600]),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 12.0,
+                    ),
                   ),
                 ),
                 actions: [
@@ -64,11 +74,16 @@ class _TarefasPageState extends State<TarefasPage> {
                         concluido: false,
                         userId: userId,
                       );
-                      db.collection("tarefas").add(tarefa.toJson()).then(
-                          (DocumentReference doc) => print(
-                              'DocumentSnapshot added with ID: ${doc.id}'));
+                      await db.collection("tarefas").add(tarefa.toJson());
                       Navigator.pop(context);
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Colors.teal, // Consistente com o tema do app
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                    ),
                     child: const Text('Salvar'),
                   ),
                 ],
@@ -76,10 +91,11 @@ class _TarefasPageState extends State<TarefasPage> {
             },
           );
         },
+        backgroundColor: Colors.teal, // Consistente com o tema do app
         child: const Icon(Icons.add),
       ),
-      body: Container(
-        margin: const EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -91,13 +107,15 @@ class _TarefasPageState extends State<TarefasPage> {
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
+                    color: Colors.teal, // Consistente com o tema do app
                   ),
                 ),
                 Switch(
                   value: apenasNaoConcluidos,
                   onChanged: (bool value) {
-                    apenasNaoConcluidos = value;
-                    setState(() {});
+                    setState(() {
+                      apenasNaoConcluidos = value;
+                    });
                   },
                 ),
               ],
@@ -117,21 +135,20 @@ class _TarefasPageState extends State<TarefasPage> {
                       child: CircularProgressIndicator(),
                     );
                   }
-
                   return ListView.separated(
                     itemCount: snapshot.data!.docs.length,
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 8.0),
                     itemBuilder: (context, index) {
                       var tarefa = TarefasModel.fromJson(
-                        (snapshot.data!.docs[index].data()
-                            as Map<String, dynamic>),
+                        snapshot.data!.docs[index].data()
+                            as Map<String, dynamic>,
                       );
                       return Container(
                         padding: const EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(12.0),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.3),
@@ -145,8 +162,8 @@ class _TarefasPageState extends State<TarefasPage> {
                           children: [
                             Checkbox(
                               value: tarefa.concluido,
-                              onChanged: (value) {
-                                tarefa.concluido = value!;
+                              onChanged: (bool? value) {
+                                tarefa.concluido = value ?? false;
                                 tarefa.dataAlteracao = DateTime.now();
                                 db
                                     .collection("tarefas")
@@ -159,6 +176,7 @@ class _TarefasPageState extends State<TarefasPage> {
                               child: Text(
                                 tarefa.descricao,
                                 style: TextStyle(
+                                  fontSize: 16.0,
                                   decoration: tarefa.concluido
                                       ? TextDecoration.lineThrough
                                       : null,
