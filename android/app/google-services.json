@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "892180106307",
+    "project_id": "gabrielsaturi-firebase-app",
+    "storage_bucket": "gabrielsaturi-firebase-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892180106307:android:c85ff36bf9ac70e3d458f6",
+        "android_client_info": {
+          "package_name": "com.gabrielsaturi.firebase.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANhIgniBzgPyw8b-l8N-ODMf6NN7E0xKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
