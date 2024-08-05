@@ -11,29 +11,29 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color(0xFF3F51B5), // Azul escuro (Material Design)
+        primaryColor: Color(0xFF4A90E2),
         colorScheme: ColorScheme.light(
-          primary: Color(0xFF3F51B5), // Azul escuro (Material Design)
-          onPrimary: Color(0xFFFFFFFF), // Branco
-          secondary: Color(0xFF00BCD4), // Azul claro (Material Design)
-          onSecondary: Color(0xFFFFFFFF), // Branco
+          primary: Color(0xFF4A90E2),
+          onPrimary: Color(0xFFFFFFFF),
+          secondary: Color(0xFF50E3C2),
+          onSecondary: Color(0xFF000000),
         ),
-        scaffoldBackgroundColor: Color(0xFFF5F5F5), // Cinza claro
+        scaffoldBackgroundColor: Color(0xFFF0F2F5),
         appBarTheme: AppBarTheme(
-          backgroundColor: Color(0xFF3F51B5), // Azul escuro (Material Design)
+          backgroundColor: Color(0xFF4A90E2),
           iconTheme: IconThemeData(
-            color: Color(0xFFFFFFFF), // Branco
+            color: Color(0xFFFFFFFF),
           ),
           titleTextStyle: TextStyle(
-            color: Color(0xFFFFFFFF), // Branco
+            color: Color(0xFFFFFFFF),
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF3F51B5), // Azul escuro (Material Design)
-            foregroundColor: Color(0xFFFFFFFF), // Branco
+            backgroundColor: Color(0xFF4A90E2),
+            foregroundColor: Color(0xFFFFFFFF),
             minimumSize: Size(double.infinity, 48.0),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
@@ -42,11 +42,11 @@ class App extends StatelessWidget {
         ),
         textTheme: TextTheme(
           bodyLarge: TextStyle(
-            color: Color(0xFF333333), // Cinza escuro
+            color: Color(0xFF333333),
             fontSize: 16.0,
           ),
           bodyMedium: TextStyle(
-            color: Color(0xFF666666), // Cinza médio
+            color: Color(0xFF666666),
             fontSize: 14.0,
           ),
         ),
